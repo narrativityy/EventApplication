@@ -1,13 +1,17 @@
-require('dotenv').config();
-
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 3000;
+const express = require("express");
 const cors = require('cors');
-const routes = require('./routes');
+const app = express();
+require('dotenv').config();
+const port = process.env.PORT;
 
-app.use('/', cors(), express.json(), routes);
+require("./config/config");
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+app.use(express.json(), express.urlencoded({ extended: true }), cors());
+
+
+const AllMyUserRoutes = require("./routes/user-routes");
+const APIRoutes = require("./routes/api-routes");
+
+app.use('/api', APIRoutes, AllMyUserRoutes);
+
+app.listen(port, () => console.log(`Listening on port: ${port}`));
